@@ -544,16 +544,36 @@ input, textarea {
   font-size: 30px;
   cursor: pointer;
 }
+.gallery-grid img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    /* إضافة لمسة احترافية عند تمرير الماوس */
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 204, 0, 0.3); /* إطار خفيف ذهبي */
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05); /* تكبير بسيط عند المرور بالماوس */
+    border-color: #ffcc00; /* توهج الإطار */
+}
     </style>
 </head>
 <div id="galleryModal" class="modal">
   <div class="modal-content">
     <span class="close-btn">&times;</span> <h2>معرض صور السيارات</h2>
-<div class="gallery-grid">
-  <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=500" alt="صورة 1">
-  <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500" alt="صورة 2">
-  <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500" alt="صورة 3">
-</div>  </div>
+ <div class="gallery-grid">
+<img src="car1.jpg,.webp" alt="صوره 1">
+<img src="car2.jpg,.webp.jpg" alt="صوره 2">
+<img src="car5.jpg" alt="صوره 3">
+<img src="car3.jpg" alt="صوره 4">
+<img src="car6.jpg" alt="صوره 5">
+<img src="car7.jpg" alt="صوره 6">
+<img src="car8.jpg" alt="صوره 7">
+<img src="car9.jpg" alt="صوره 8">
+</div>  
+</div>
 </div>
 <body>
     <div class="settings-wrapper">
@@ -675,7 +695,69 @@ input, textarea {
                 btn.style.backgroundColor = '#2ecc71';
             }
         });
+        let currentSpeed = 0;
+        const maxSpeed = 280;
+        const speedElement = document.getElementById('speedCounter');
+        const fillElement = document.getElementById('progressFill');
 
+        const drive = setInterval(() => {
+            if (currentSpeed >= maxSpeed) {
+                clearInterval(drive);
+            } else {
+                currentSpeed += 5;
+                speedElement.innerText = currentSpeed;
+
+                // تحديث شريط التقدم ليتحرك مع الرقم
+                let percentage = (currentSpeed / maxSpeed) * 100;
+                fillElement.style.width = percentage + "%";
+            }
+        }, 20);
+const sBtn = document.getElementById('settingsBtn');
+const sMenu = document.getElementById('settingsMenu');
+
+// فتح وإغلاق القائمة عند الضغط على الترس
+sBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sMenu.classList.toggle('active');
+});
+
+// إغلاق القائمة عند الضغط في أي مكان خارجها
+document.addEventListener('click', () => {
+    sMenu.classList.remove('active');
+});
+
+// ننتظر حتى يتم تحميل الصفحة بالكامل
+document.addEventListener("DOMContentLoaded", function() {
+    
+    var modal = document.getElementById("galleryModal");
+    var btn = document.getElementById("galleryBtn"); // الكلمة في القائمة
+    var span = document.getElementsByClassName("close-btn")[0];
+
+    // عند الضغط على كلمة المعرض
+    if (btn) {
+        btn.onclick = function(e) {
+            e.preventDefault();
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden"; // يمنع تحرك الصفحة الخلفية
+        }
+    }
+
+    // عند الضغط على إغلاق
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // يعيد حركة الصفحة
+        }
+    }
+
+    // إغلاق عند الضغط خارج النافذة
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+});
 document.addEventListener("DOMContentLoaded", function() {
     var modal = document.getElementById("galleryModal");
     var btn = document.getElementById("galleryBtn"); // زر المعرض
@@ -716,7 +798,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 });
-</script>    
+
+    </script>
+    
     
 </body>
 
