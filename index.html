@@ -675,72 +675,48 @@ input, textarea {
                 btn.style.backgroundColor = '#2ecc71';
             }
         });
-        let currentSpeed = 0;
-        const maxSpeed = 280;
-        const speedElement = document.getElementById('speedCounter');
-        const fillElement = document.getElementById('progressFill');
 
-        const drive = setInterval(() => {
-            if (currentSpeed >= maxSpeed) {
-                clearInterval(drive);
-            } else {
-                currentSpeed += 5;
-                speedElement.innerText = currentSpeed;
-
-                // تحديث شريط التقدم ليتحرك مع الرقم
-                let percentage = (currentSpeed / maxSpeed) * 100;
-                fillElement.style.width = percentage + "%";
-            }
-        }, 20);
-const sBtn = document.getElementById('settingsBtn');
-const sMenu = document.getElementById('settingsMenu');
-
-// فتح وإغلاق القائمة عند الضغط على الترس
-sBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    sMenu.classList.toggle('active');
-});
-
-// إغلاق القائمة عند الضغط في أي مكان خارجها
-document.addEventListener('click', () => {
-    sMenu.classList.remove('active');
-});
-
-// ننتظر حتى يتم تحميل الصفحة بالكامل
 document.addEventListener("DOMContentLoaded", function() {
-    
     var modal = document.getElementById("galleryModal");
-    var btn = document.getElementById("galleryBtn"); // الكلمة في القائمة
-    var span = document.getElementsByClassName("close-btn")[0];
+    var btn = document.getElementById("galleryBtn"); // زر المعرض
+    var span = document.getElementsByClassName("close-btn")[0]; // زر الإغلاق
+    var settingsIcon = document.getElementById("settingsBtn"); // أيقونة الترس
 
-    // عند الضغط على كلمة المعرض
+    // عند فتح المعرض
     if (btn) {
         btn.onclick = function(e) {
             e.preventDefault();
             modal.style.display = "block";
-            document.body.style.overflow = "hidden"; // يمنع تحرك الصفحة الخلفية
+            document.body.style.overflow = "hidden";
+            
+            // --- السطر المطلوب لإخفاء الترس ---
+            if (settingsIcon) { settingsIcon.style.display = "none"; }
         }
     }
 
-    // عند الضغط على إغلاق
+    // عند إغلاق المعرض (من علامة X)
     if (span) {
         span.onclick = function() {
             modal.style.display = "none";
-            document.body.style.overflow = "auto"; // يعيد حركة الصفحة
+            document.body.style.overflow = "auto";
+            
+            // --- إظهار الترس مرة أخرى عند الإغلاق ---
+            if (settingsIcon) { settingsIcon.style.display = "block"; }
         }
     }
 
-    // إغلاق عند الضغط خارج النافذة
+    // عند إغلاق المعرض بالضغط في أي مكان خارج الصور
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
             document.body.style.overflow = "auto";
+            
+            // --- إظهار الترس مرة أخرى ---
+            if (settingsIcon) { settingsIcon.style.display = "block"; }
         }
     }
 });
-
-    </script>
-    
+</script>    
     
 </body>
 
