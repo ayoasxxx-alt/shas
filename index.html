@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> منصة منذر - للروايات</title>
+    <title>منصة منذر - النسخة المتكاملة</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -13,43 +13,29 @@
     <style>
         :root { --primary: #007bff; --grad: linear-gradient(135deg, #0062E6, #33AEFF); }
         body { background: #f0f2f5; font-family: 'Segoe UI', Tahoma; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
-        
-        header { 
-            background: var(--grad); color: white; padding: 15px; text-align: center; 
-            font-size: 18px; font-weight: bold; position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 0 0 15px 15px;
-        }
-
+        header { background: var(--grad); color: white; padding: 15px; text-align: center; font-size: 18px; font-weight: bold; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 0 0 15px 15px; }
         .container { width: 92%; max-width: 500px; margin: 15px auto; }
-        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
-
-        textarea { width: 100%; border: 1px solid #eee; border-radius: 10px; padding: 10px; resize: none; font-size: 14px; background: #f9f9f9; }
-        
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        input, textarea { width: 100%; border: 1px solid #eee; border-radius: 10px; padding: 12px; margin: 8px 0; box-sizing: border-box; font-size: 14px; background: #f9f9f9; outline: none; }
+        button { background: var(--grad); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; transition: 0.3s; }
         .post-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; text-align: right; border: 1px solid #f0f0f0; }
         .u-info { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--primary); font-weight: bold; font-size: 13px; }
-        
-        /* تحسين شكل التعليقات على الهاتف */
         .comm-sec { background: #f8faff; border-radius: 10px; padding: 10px; margin-top: 10px; }
         .comm-box { display: flex; gap: 5px; margin-top: 10px; }
-        .comm-box input { flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ddd; font-size: 12px; }
+        .comm-box input { margin: 0; padding: 8px; border-radius: 20px; font-size: 12px; flex: 1; }
         .comm-box button { width: auto; padding: 5px 15px; border-radius: 20px; font-size: 12px; }
-
-        /* شريط سفلي متناسق مع الهاتف */
-        .nav { 
-            position: fixed; bottom: 0; width: 100%; background: white; 
-            display: flex; justify-content: space-around; padding: 10px 0;
-            box-shadow: 0 -3px 15px rgba(0,0,0,0.08); border-radius: 20px 20px 0 0; z-index: 2000;
-        }
-        .nav-item { color: #8e8e8e; text-align: center; font-size: 10px; flex: 1; transition: 0.3s; }
-        .nav-item.active { color: var(--primary); transform: translateY(-3px); }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
-
-        button { background: var(--grad); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; }
+        .nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 15px rgba(0,0,0,0.08); border-radius: 20px 20px 0 0; z-index: 2000; }
+        .nav-item { color: #8e8e8e; text-align: center; font-size: 10px; flex: 1; text-decoration: none; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 22px; display: block; margin-bottom: 2px; }
+        #loader { position:fixed; top:0; left:0; width:100%; height:100%; background:white; display:flex; justify-content:center; align-items:center; z-index:9999; transition: 0.5s; }
     </style>
 </head>
 <body>
 
-<header id="h-title">الرئيسيه </header>
+<div id="loader"><div style="text-align:center"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:40px; color:#007bff"></i><p style="color:#007bff; font-weight:bold">جاري التحميل...</p></div></div>
+
+<header id="h-title">الساحة العامة</header>
 
 <div id="nav" class="nav" style="display:none;">
     <div class="nav-item active" id="n-home" onclick="go('public')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
@@ -59,16 +45,18 @@
 
 <div class="container">
     <div id="auth" class="card">
-        <h3 style="text-align:center">دخول المنصة</h3>
-        <input type="email" id="email" placeholder="الإيميل" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ddd">
-        <input type="password" id="pass" placeholder="كلمة المرور" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ddd">
-        <button onclick="login()">دخول</button>
+        <h3 id="auth-title" style="text-align:center">دخول المنصة</h3>
+        <input type="text" id="userName" placeholder="الاسم الكامل" style="display:none;">
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        <button id="btn-main" onclick="handleAuth()">دخول</button>
+        <p id="auth-toggle" onclick="toggleAuth()" style="text-align:center; font-size:13px; color:#007bff; margin-top:15px; cursor:pointer;">ليس لديك حساب؟ إنشاء حساب جديد</p>
     </div>
 
     <div id="main" style="display:none;">
         <div id="p-box" class="card">
-            <textarea id="p-txt" placeholder="بماذا تفكر؟" rows="2"></textarea>
-            <button onclick="post()" style="margin-top:10px">نشر</button>
+            <textarea id="p-txt" placeholder="بماذا تفكر يا منذر؟" rows="2"></textarea>
+            <button onclick="post()">نشر الآن</button>
         </div>
         <div id="feed"></div>
     </div>
@@ -85,20 +73,44 @@
     };
     firebase.initializeApp(conf);
     const auth = firebase.auth(), db = firebase.firestore();
-    let mode = 'public';
+    
+    let isLoginMode = true, mode = 'public';
 
-    function login() {
-        auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value);
+    function toggleAuth() {
+        isLoginMode = !isLoginMode;
+        document.getElementById('userName').style.display = isLoginMode ? 'none' : 'block';
+        document.getElementById('auth-title').innerText = isLoginMode ? "دخول المنصة" : "إنشاء حساب جديد";
+        document.getElementById('btn-main').innerText = isLoginMode ? "دخول" : "تسجيل حساب";
+        document.getElementById('auth-toggle').innerText = isLoginMode ? "ليس لديك حساب؟ إنشاء حساب جديد" : "لديك حساب بالفعل؟ سجل دخولك";
     }
+
+    function handleAuth() {
+        const e = document.getElementById('email').value, p = document.getElementById('pass').value, n = document.getElementById('userName').value;
+        if(isLoginMode) {
+            auth.signInWithEmailAndPassword(e, p).catch(err => alert("خطأ: " + err.message));
+        } else {
+            if(!n) return alert("يرجى كتابة الاسم");
+            auth.createUserWithEmailAndPassword(e, p).then(cred => {
+                return cred.user.updateProfile({ displayName: n });
+            }).then(() => location.reload()).catch(err => alert("خطأ: " + err.message));
+        }
+    }
+
     function logout() { auth.signOut(); location.reload(); }
 
     auth.onAuthStateChanged(u => {
+        const ld = document.getElementById('loader');
         if(u) {
             document.getElementById('auth').style.display='none';
             document.getElementById('main').style.display='block';
             document.getElementById('nav').style.display='flex';
             load();
+        } else {
+            document.getElementById('auth').style.display='block';
+            document.getElementById('main').style.display='none';
+            document.getElementById('nav').style.display='none';
         }
+        setTimeout(() => { ld.style.opacity='0'; setTimeout(()=>ld.style.display='none',500); }, 800);
     });
 
     function go(m) {
@@ -114,7 +126,7 @@
         const t = document.getElementById('p-txt').value;
         if(!t.trim()) return;
         db.collection("posts").add({
-            name: auth.currentUser.email.split('@')[0],
+            name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0],
             uid: auth.currentUser.uid,
             text: t,
             time: Date.now(),
@@ -133,12 +145,12 @@
         const i = document.getElementById('in-'+id), v = i.value;
         if(!v.trim()) return;
         await db.collection("posts").doc(id).update({
-            coms: firebase.firestore.FieldValue.arrayUnion({u: auth.currentUser.email.split('@')[0], t: v})
+            coms: firebase.firestore.FieldValue.arrayUnion({u: auth.currentUser.displayName || "مستخدم", t: v})
         });
         i.value="";
     }
 
-    function load() {
+function load() {
         let q = db.collection("posts").orderBy("time", "desc");
         if(mode=='private') q = q.where("uid", "==", auth.currentUser.uid);
         
@@ -146,24 +158,38 @@
             let h = "";
             snap.forEach(doc => {
                 const p = doc.data(), id = doc.id;
-                h += `
-                <div class="post-card">
+                // التأكد من جلب التعليقات سواء كانت بالاسم القديم أو الجديد
+                const commentsList = p.coms || p.comments || [];
+                
+                h += `<div class="post-card">
                     <div class="u-info"><i class="fa-solid fa-user-circle"></i> ${p.name}</div>
                     <div style="font-size:15px; margin-bottom:10px">${p.text}</div>
-                    <button onclick="doLike('${id}')" style="width:auto; background:none; color:#007bff; border:1px solid #007bff; padding:4px 12px; font-size:12px; border-radius:20px">
-                        ❤️ ${(p.likes||[]).length}
-                    </button>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <button onclick="doLike('${id}')" style="width:auto; background:none; color:#007bff; border:1px solid #007bff; padding:4px 12px; font-size:12px; border-radius:20px">
+                            ❤️ ${(p.likes||[]).length} أعجبني
+                        </button>
+                    </div>
+
                     <div class="comm-sec">
-                        <div class="comm-box">
-                            <input type="text" id="in-${id}" placeholder="رد...">
-                            <button onclick="doCom('${id}')">رد</button>
+                        <div id="comments-container-${id}">
+                            ${commentsList.map(c => `
+                                <div style="font-size:12px; margin-bottom:5px; border-bottom: 1px solid #eee; padding-bottom: 3px;">
+                                    <b style="color:#007bff">${c.u || "مستخدم"}:</b> ${c.t || c.msg}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="comm-box" style="display:flex; gap:5px; margin-top:10px;">
+                            <input type="text" id="in-${id}" placeholder="اكتب رداً..." style="flex:1; padding:8px; border-radius:20px; border:1px solid #ddd; font-size:12px;">
+                            <button onclick="doCom('${id}')" style="width:auto; padding:5px 15px; border-radius:20px; font-size:12px; background:var(--grad); color:white; border:none;">رد</button>
                         </div>
                     </div>
                 </div>`;
             });
-            document.getElementById('feed').innerHTML = h || "<p style='text-align:center; color:#999'>لا يوجد منشورات</p>";
+            document.getElementById('feed').innerHTML = h || "<p style='text-align:center; color:#999'>لا توجد منشورات</p>";
         });
     }
-</script>
+    </script>
 </body>
 </html>
